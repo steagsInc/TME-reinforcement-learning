@@ -130,4 +130,4 @@ if __name__ == "__main__":
         else:
             reward_fulfilled = 0
         traced = torch.jit.script(actor_t)
-        torch.jit.save(traced, "data/policies/#"+"VTD3"+str("ffvfv")+"#"+str("1000")+".zip")
+        torch.jit.save(traced, "../data/policies/#"+"VTD3"+str("ffvfv")+"#"+str("1000")+".zip")

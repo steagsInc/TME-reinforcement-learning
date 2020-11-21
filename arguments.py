@@ -19,7 +19,7 @@ def make_learning_params_string(params):
 
 def make_full_string(params):
     return make_study_string(params) + '_' + make_study_params_string(params) + '_' \
-           + make_learning_params_string(params)
+           + make_learning_params_string(params) + '_'+ str(params.policy_type)
 
 
 def get_args():
