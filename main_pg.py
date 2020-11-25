@@ -62,7 +62,7 @@ def study_pg(params) -> None:
         for j in range(params.nb_repet):
             simu.env.reinit()
             if params.policy_type == "bernoulli":
-                policy = BernoulliPolicy(simu.obs_size, 24, 36, 1, params.lr_actor)
+                policy = BernoulliPolicy(simu.obs_size, 100, 200, 1, params.lr_actor)
             #### MODIF : added the discrete policy
             elif params.policy_type == "discrete":
                 if isinstance(simu.env.action_space , gym.spaces.box.Box):
@@ -73,9 +73,9 @@ def study_pg(params) -> None:
                 policy = DiscretePolicy(simu.obs_size, 24, 36, nb_actions, params.lr_actor)
             ####
             elif params.policy_type == "normal":
-                policy = NormalPolicy(simu.obs_size, 24, 36, 1, params.lr_actor)
+                policy = NormalPolicy(simu.obs_size, 100, 200, 1, params.lr_actor)
             elif params.policy_type == "squashedGaussian":
-                policy = SquashedGaussianPolicy(simu.obs_size, 24, 36, 1, params.lr_actor)
+                policy = SquashedGaussianPolicy(simu.obs_size, 100, 200, 1, params.lr_actor)
             elif params.policy_type == "DDPG":
                 policy = DDPG(simu.obs_size, 24, 36, 1, params.lr_actor)
             # policy = policy.cuda()

@@ -6,6 +6,7 @@ from machin.utils.logging import default_logger as logger
 import torch as t
 import torch.nn as nn
 import gym
+import matplotlib.pyplot as plt
 
 # configurations
 env = gym.make("Pendulum-v0")
@@ -16,7 +17,7 @@ max_episodes = 1000
 max_steps = 800
 noise_param = (0, 0.2)
 noise_mode = "normal"
-solved_reward = -150
+solved_reward = -200
 solved_repeat = 5
 
 
@@ -81,6 +82,7 @@ if __name__ == "__main__":
 
     episode, step, reward_fulfilled = 0, 0, 0
     smoothed_total_reward = 0
+    training_record = []
 
     while episode < max_episodes:
         episode += 1
@@ -112,7 +114,7 @@ if __name__ == "__main__":
                 })
 
         # update, update more if episode is longer, else less
-        if episode > 100:
+        if episode > 0:
             for _ in range(step):
                 td3.update()
 
@@ -122,12 +124,21 @@ if __name__ == "__main__":
         logger.info("Episode {} total reward={:.2f}"
                     .format(episode, smoothed_total_reward))
 
+        training_record.append((episode, smoothed_total_reward))
+
         if smoothed_total_reward > solved_reward:
             reward_fulfilled += 1
             if reward_fulfilled >= solved_repeat:
                 logger.info("Environment solved!")
-                exit(0)
+                break
         else:
             reward_fulfilled = 0
-        traced = torch.jit.script(actor_t)
-        torch.jit.save(traced, "../data/policies/#"+"VTD3"+str("ffvfv")+"#"+str("1000")+".zip")
+    traced = torch.jit.script(actor_t)
+    torch.jit.save(traced, "../data/policies/Pendulum-v0#VTD3#"+str("ffvfv")+"#200#1000.zip")
+
+    plt.plot([r[0] for r in training_record],[r[1] for r in training_record])
+    plt.title('TD3')
+    plt.xlabel('Episode')
+    plt.ylabel("reward")
+    plt.savefig("../data/plots/td3.png")
+    plt.show()
